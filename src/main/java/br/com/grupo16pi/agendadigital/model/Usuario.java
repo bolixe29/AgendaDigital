@@ -1,42 +1,42 @@
 package br.com.grupo16pi.agendadigital.model;
 
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
+import br.com.grupo16pi.agendadigital.enums.UfEnum;
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
-@Entity // Marca a classe como uma entidade JPA
-@Table(name = "usuarios") // Define o nome da tabela no banco de dados
+@Entity
+@Table(name = "usuarios")
 public class Usuario {
 
-    @Id // Chave primária
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // ID gerado automaticamente pelo banco
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false) // Nome obrigatório
+    @Column(nullable = false)
     private String nome;
 
-    @Column(nullable = false) // Data de nascimento obrigatória
+    @Column(nullable = false)
     private LocalDate dataNascimento;
 
-    @Column(nullable = false, unique = true) // CPF obrigatório e único
+    @Column(nullable = false, unique = true)
     private String cpf;
 
-    @Column(nullable = false, unique = true) // Número do SUS obrigatório e único
+    @Column(nullable = false, unique = true)
     private String numeroSus;
 
-    private String telefone;     // Telefone (opcional)
-    private String logradouro;   // Rua ou avenida
-    private String numero;       // Número da residência
-    private String cep;          // Código postal
-    private String bairro;       // Bairro do usuário
-    private String cidade;       // Cidade
-    private String uf;           // Estado (UF)
+    private String telefone;
+    private String logradouro;
+    private String numero;
+    private String cep;
+    private String bairro;
+    private String cidade;
 
-    // Getters e setters...
+    @Enumerated(EnumType.STRING) // Salva o Enum como texto no banco de dados
+    @Column(nullable = false)
+    private UfEnum uf;
+
+    // Getters e Setters
 
     public Long getId() {
         return id;
@@ -126,11 +126,11 @@ public class Usuario {
         this.cidade = cidade;
     }
 
-    public String getUf() {
+    public UfEnum getUf() {
         return uf;
     }
 
-    public void setUf(String uf) {
+    public void setUf(UfEnum uf) {
         this.uf = uf;
     }
 }
