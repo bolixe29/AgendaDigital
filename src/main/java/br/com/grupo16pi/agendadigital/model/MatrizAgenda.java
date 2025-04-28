@@ -12,7 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity // Marca esta classe como uma entidade JPA (mapeada para uma tabela)
-@Table(name = "disponibilidade_especialidade") // Define o nome da tabela no banco
+@Table(name = "matriz_agenda") // Define o nome da tabela no banco
 public class MatrizAgenda {
 
     @Id // Chave primária

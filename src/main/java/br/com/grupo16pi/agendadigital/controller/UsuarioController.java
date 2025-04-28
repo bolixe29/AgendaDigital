@@ -1,43 +1,89 @@
 package br.com.grupo16pi.agendadigital.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.com.grupo16pi.agendadigital.DTOs.UsuarioRequestDTO;
+import br.com.grupo16pi.agendadigital.DTOs.UsuarioResponseDTO;
 import br.com.grupo16pi.agendadigital.model.Usuario;
 import br.com.grupo16pi.agendadigital.service.UsuarioService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
-import java.util.List;
-import java.util.Optional;
-
-@RestController // API REST
-@RequestMapping("/usuarios") // Caminho: /usuarios
+@RestController
+@RequestMapping("/usuarios")
 public class UsuarioController {
 
     @Autowired
-    private UsuarioService usuarioService; // Lida com a lógica de usuário
+    private UsuarioService usuarioService;
 
-    @GetMapping // GET em /usuarios: Lista todos
-    public List<Usuario> findAll() {
-        return usuarioService.findAll();
+    @GetMapping
+    public List<UsuarioResponseDTO> findAll() {
+        return usuarioService.findAll()
+                .stream()
+                .map(this::toResponseDTO)
+                .toList();
     }
 
-    @GetMapping("/{id}") // GET em /usuarios/{id}: Busca por ID
-    public Optional<Usuario> findById(@PathVariable Long id) {
-        return usuarioService.findById(id);
+    @GetMapping("/{id}")
+    public UsuarioResponseDTO findById(@PathVariable Long id) {
+        Usuario usuario = usuarioService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        return toResponseDTO(usuario);
     }
 
-    @PostMapping // POST em /usuarios: Salva novo
-    public Usuario save(@RequestBody Usuario usuario) {
-        return usuarioService.save(usuario);
+    @PostMapping
+    public UsuarioResponseDTO save(@RequestBody @Valid UsuarioRequestDTO usuarioRequestDTO) {
+        Usuario usuario = toEntity(usuarioRequestDTO);
+        Usuario saved = usuarioService.save(usuario);
+        return toResponseDTO(saved);
     }
 
-    @PutMapping("/{id}") // PUT em /usuarios/{id}: Atualiza por ID
-    public Usuario update(@PathVariable Long id, @RequestBody Usuario usuario) {
+    @PutMapping("/{id}")
+    public UsuarioResponseDTO update(@PathVariable Long id, @RequestBody @Valid UsuarioRequestDTO usuarioRequestDTO) {
+        Usuario usuario = toEntity(usuarioRequestDTO);
         usuario.setId(id);
-        return usuarioService.save(usuario);
+        Usuario updated = usuarioService.save(usuario);
+        return toResponseDTO(updated);
     }
 
-    @DeleteMapping("/{id}") // DELETE em /usuarios/{id}: Deleta por ID
+    @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {
         usuarioService.deleteById(id);
+    }
+
+    // Conversores
+
+    private UsuarioResponseDTO toResponseDTO(Usuario usuario) {
+        UsuarioResponseDTO dto = new UsuarioResponseDTO();
+        dto.setId(usuario.getId());
+        dto.setNome(usuario.getNome());
+        dto.setCpf(usuario.getCpf());
+        dto.setNumeroSus(usuario.getNumeroSus());
+        return dto;
+    }
+
+    private Usuario toEntity(UsuarioRequestDTO dto) {
+        Usuario usuario = new Usuario();
+        usuario.setNome(dto.getNome());
+        usuario.setDataNascimento(dto.getDataNascimento());
+        usuario.setCpf(dto.getCpf());
+        usuario.setNumeroSus(dto.getNumeroSus());
+        usuario.setTelefone(dto.getTelefone());
+        usuario.setLogradouro(dto.getLogradouro());
+        usuario.setNumero(dto.getNumero());
+        usuario.setCep(dto.getCep());
+        usuario.setBairro(dto.getBairro());
+        usuario.setCidade(dto.getCidade());
+        usuario.setUf(br.com.grupo16pi.agendadigital.enums.UfEnum.valueOf(dto.getUf()));
+        return usuario;
     }
 }
