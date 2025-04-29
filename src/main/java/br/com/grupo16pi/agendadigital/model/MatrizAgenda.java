@@ -2,11 +2,14 @@ package br.com.grupo16pi.agendadigital.model;
 
 import java.time.LocalTime;
 
-import jakarta.persistence.Id;
+import br.com.grupo16pi.agendadigital.enums.DiaSemanaEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -22,9 +25,10 @@ public class MatrizAgenda {
     @ManyToOne // Relação muitos-para-um com Especialidade
     @JoinColumn(name = "especialidade_id", nullable = false) // Chave estrangeira que referencia uma especialidade
     private Especialidade especialidade;
-
-    @Column(nullable = false) // Dia da semana (ex: 1 = Domingo, 2 = Segunda, etc.)
-    private int diaSemana;
+    
+    @Enumerated(EnumType.STRING) // Salva o enum como texto no banco e dia da semana (ex: 1 = Domingo, 2 = Segunda, etc.) 
+    @Column(nullable = false) // Não nulo
+    private DiaSemanaEnum diaSemana;
 
     @Column(nullable = false) // Hora de início da disponibilidade
     private LocalTime horarioInicio;
@@ -53,11 +57,11 @@ public class MatrizAgenda {
         this.especialidade = especialidade;
     }
 
-    public int getDiaSemana() {
+    public DiaSemanaEnum getDiaSemana() {
         return diaSemana;
     }
 
-    public void setDiaSemana(int diaSemana) {
+    public void setDiaSemana(DiaSemanaEnum diaSemana) {
         this.diaSemana = diaSemana;
     }
 
