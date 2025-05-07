@@ -3,8 +3,10 @@ package br.com.grupo16pi.agendadigital.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.grupo16pi.agendadigital.DTOs.UsuarioRequestDTO;
 import br.com.grupo16pi.agendadigital.DTOs.UsuarioResponseDTO;
+import br.com.grupo16pi.agendadigital.DTOs.UsuarioUpdateDTO;
 import br.com.grupo16pi.agendadigital.model.Usuario;
 import br.com.grupo16pi.agendadigital.service.UsuarioService;
 import jakarta.validation.Valid;
@@ -59,15 +62,29 @@ public class UsuarioController {
     public void deleteById(@PathVariable Long id) {
         usuarioService.deleteById(id);
     }
+    
+    @PatchMapping("/{id}")
+    public ResponseEntity<Usuario> patchUsuario(@PathVariable Long id, @RequestBody UsuarioUpdateDTO dto) {
+        Usuario atualizado = usuarioService.updatePartial(id, dto);
+        return ResponseEntity.ok(atualizado);
+    }
 
     // Conversores
 
-    private UsuarioResponseDTO toResponseDTO(Usuario usuario) {
+    public UsuarioResponseDTO toResponseDTO(Usuario usuario) {
         UsuarioResponseDTO dto = new UsuarioResponseDTO();
         dto.setId(usuario.getId());
         dto.setNome(usuario.getNome());
+        dto.setDataNascimento(usuario.getDataNascimento());
         dto.setCpf(usuario.getCpf());
         dto.setNumeroSus(usuario.getNumeroSus());
+        dto.setTelefone(usuario.getTelefone());
+        dto.setLogradouro(usuario.getLogradouro());
+        dto.setNumero(usuario.getNumero());
+        dto.setCep(usuario.getCep());
+        dto.setBairro(usuario.getBairro());
+        dto.setCidade(usuario.getCidade());
+        dto.setUf(usuario.getUf());
         return dto;
     }
 

@@ -16,7 +16,12 @@ public class AgendamentoRequestDTO {
     @NotNull(message = "O ID do usuário é obrigatório")
     private Long usuarioId;
 
-    @NotNull(message = "O ID do profissional é obrigatório")
+    @NotNull(message = "A especialidade é obrigatória")
+    private Long especialidadeId;
+
+    private String procedimento;
+
+    // Removida anotação @NotNull(message = "O ID do profissional é obrigatório"), pois o profissional não será obrigatório
     private Long profissionalId;
 
     // Getters e Setters
@@ -51,6 +56,22 @@ public class AgendamentoRequestDTO {
 
     public void setProfissionalId(Long profissionalId) {
         this.profissionalId = profissionalId;
+    }
+
+    public Long getEspecialidadeId() {
+        return especialidadeId;
+    }
+
+    public void setEspecialidadeId(Long especialidadeId) {
+        this.especialidadeId = especialidadeId;
+    }
+
+    public String getProcedimento() {
+        return procedimento;
+    }
+
+    public void setProcedimento(String procedimento) {
+        this.procedimento = procedimento;
     }
 
 }

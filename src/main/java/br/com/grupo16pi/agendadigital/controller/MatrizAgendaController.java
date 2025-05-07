@@ -1,43 +1,104 @@
 package br.com.grupo16pi.agendadigital.controller;
-
-import br.com.grupo16pi.agendadigital.model.MatrizAgenda;
-import br.com.grupo16pi.agendadigital.service.MatrizAgendaService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
-@RestController // API REST para Matriz de Agendas
-@RequestMapping("/matrizes-agenda") // Caminho: /matrizes-agenda
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.com.grupo16pi.agendadigital.DTOs.MatrizAgendaRequestDTO;
+import br.com.grupo16pi.agendadigital.DTOs.MatrizAgendaResponseDTO;
+import br.com.grupo16pi.agendadigital.model.Especialidade;
+import br.com.grupo16pi.agendadigital.model.MatrizAgenda;
+import br.com.grupo16pi.agendadigital.repository.EspecialidadeRepository;
+import br.com.grupo16pi.agendadigital.repository.MatrizAgendaRepository;
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/matrizes-agenda")
 public class MatrizAgendaController {
 
-    @Autowired
-    private MatrizAgendaService matrizAgendaService; // Lida com a lógica da matriz de agendas
+    private final MatrizAgendaRepository matrizAgendaRepository;
+    private final EspecialidadeRepository especialidadeRepository;
 
-    @GetMapping // GET em /matrizes-agenda: Lista todas
-    public List<MatrizAgenda> findAll() {
-        return matrizAgendaService.findAll();
+    public MatrizAgendaController(MatrizAgendaRepository matrizAgendaRepository, EspecialidadeRepository especialidadeRepository) {
+        this.matrizAgendaRepository = matrizAgendaRepository;
+        this.especialidadeRepository = especialidadeRepository;
     }
 
-    @GetMapping("/{id}") // GET em /matrizes-agenda/{id}: Busca matriz por ID
-    public Optional<MatrizAgenda> findById(@PathVariable Long id) {
-        return matrizAgendaService.findById(id);
+    @GetMapping
+    public List<MatrizAgendaResponseDTO> listarTodos() {
+        return matrizAgendaRepository.findAll().stream()
+                .map(this::toResponseDTO)
+                .collect(Collectors.toList());
     }
 
-    @PostMapping // POST em /matrizes-agenda: Salva nova matriz
-    public MatrizAgenda save(@RequestBody MatrizAgenda matrizAgenda) {
-        return matrizAgendaService.save(matrizAgenda);
+    @GetMapping("/{id}")
+    public ResponseEntity<MatrizAgendaResponseDTO> buscarPorId(@PathVariable Long id) {
+        return matrizAgendaRepository.findById(id)
+                .map(agenda -> ResponseEntity.ok(toResponseDTO(agenda)))
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{id}") // PUT em /matrizes-agenda/{id}: Atualiza matriz por ID
-    public MatrizAgenda update(@PathVariable Long id, @RequestBody MatrizAgenda matrizAgenda) {
-        matrizAgenda.setId(id);
-        return matrizAgendaService.save(matrizAgenda);
+    @PostMapping
+    public ResponseEntity<MatrizAgendaResponseDTO> criar(@RequestBody @Valid MatrizAgendaRequestDTO dto) {
+        Especialidade especialidade = especialidadeRepository.findById(dto.getEspecialidadeId())
+            .orElseThrow(() -> new RuntimeException("Especialidade não encontrada"));
+
+        MatrizAgenda nova = new MatrizAgenda();
+        nova.setEspecialidade(especialidade);
+        nova.setDiaSemana(dto.getDiaSemana());
+        nova.setHorarioInicio(dto.getHorarioInicio());
+        nova.setHorarioFim(dto.getHorarioFim());
+        nova.setDisponivel(dto.getDisponivel());
+
+        MatrizAgenda salva = matrizAgendaRepository.save(nova);
+        return ResponseEntity.status(HttpStatus.CREATED).body(toResponseDTO(salva));
     }
 
-    @DeleteMapping("/{id}") // DELETE em /matrizes-agenda/{id}: Deleta matriz por ID
-    public void deleteById(@PathVariable Long id) {
-        matrizAgendaService.deleteById(id);
+    @PutMapping("/{id}")
+    public ResponseEntity<MatrizAgendaResponseDTO> atualizar(@PathVariable Long id,
+        @RequestBody @Valid MatrizAgendaRequestDTO dto) {
+
+        return matrizAgendaRepository.findById(id).map(existing -> {
+            Especialidade especialidade = especialidadeRepository.findById(dto.getEspecialidadeId())
+                .orElseThrow(() -> new RuntimeException("Especialidade não encontrada"));
+
+            existing.setEspecialidade(especialidade);
+            existing.setDiaSemana(dto.getDiaSemana());
+            existing.setHorarioInicio(dto.getHorarioInicio());
+            existing.setHorarioFim(dto.getHorarioFim());
+            existing.setDisponivel(dto.getDisponivel());
+
+            matrizAgendaRepository.save(existing);
+            return ResponseEntity.ok(toResponseDTO(existing));
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        if (matrizAgendaRepository.existsById(id)) {
+            matrizAgendaRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    private MatrizAgendaResponseDTO toResponseDTO(MatrizAgenda entity) {
+        MatrizAgendaResponseDTO dto = new MatrizAgendaResponseDTO();
+        dto.setId(entity.getId());
+        dto.setNomeEspecialidade(entity.getEspecialidade().getNome());
+        dto.setDiaSemana(entity.getDiaSemana());
+        dto.setHorarioInicio(entity.getHorarioInicio());
+        dto.setHorarioFim(entity.getHorarioFim());
+        dto.setDisponivel(entity.isDisponivel());
+        return dto;
     }
 }

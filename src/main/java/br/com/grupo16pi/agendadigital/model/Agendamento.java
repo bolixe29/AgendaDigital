@@ -25,8 +25,12 @@ public class Agendamento {
     private Usuario usuario;
 
     @ManyToOne
-    @JoinColumn(name = "profissional_id", nullable = false) // Chave estrangeira para o profissional
-    private Profissional profissional;
+    @JoinColumn(name = "especialidade_id", nullable = false) // Adicionada a especialidade como chave estrangeira   
+    private Especialidade especialidade;    
+
+    @ManyToOne
+    @JoinColumn(name = "profissional_id")
+    private Profissional profissional; // Removido o `nullable = false` que não fazia sentido na marcação da consulta
 
     @Column(nullable = false) // Campo obrigatório para o nome do procedimento
     private String procedimento;
@@ -85,5 +89,13 @@ public class Agendamento {
 
     public void setHorario(LocalTime horario) {
         this.horario = horario;
+    }
+
+    public Especialidade getEspecialidade() {
+        return especialidade;
+    }
+
+    public void setEspecialidade(Especialidade especialidade) {
+        this.especialidade = especialidade;
     }
 }
