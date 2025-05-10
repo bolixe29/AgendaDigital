@@ -40,4 +40,8 @@ public class ProfissionalController {
     public void deleteById(@PathVariable Long id) {
         profissionalService.deleteById(id);
     }
+    @GetMapping("/nome")
+    public List<Profissional> findByNome(@RequestParam String nome) {
+    return profissionalService.findByNome(nome);
+    }
 }

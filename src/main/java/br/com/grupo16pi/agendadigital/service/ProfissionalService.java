@@ -29,4 +29,7 @@ public class ProfissionalService {
     public void deleteById(Long id) { // Deleta um profissional pelo ID.
         profissionalRepository.deleteById(id);
     }
+    public List<Profissional> findByNome(String nome) {
+        return profissionalRepository.findByNomeContainingIgnoreCase(nome);
+    }
 }

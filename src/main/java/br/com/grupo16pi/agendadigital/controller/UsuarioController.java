@@ -69,6 +69,22 @@ public class UsuarioController {
         return ResponseEntity.ok(atualizado);
     }
 
+    @GetMapping("/cpf/{cpf}")
+    public ResponseEntity<UsuarioResponseDTO> findByCpf(@PathVariable String cpf) {
+        return usuarioService.findByCpf(cpf)
+        .map(this::toResponseDTO)
+        .map(ResponseEntity::ok)
+        .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/sus/{sus}")
+    public ResponseEntity<UsuarioResponseDTO> findByNumeroSus(@PathVariable String sus) {
+        return usuarioService.findByNumeroSus(sus)
+        .map(this::toResponseDTO)
+        .map(ResponseEntity::ok)
+        .orElse(ResponseEntity.notFound().build());
+    }
+
     // Conversores
 
     public UsuarioResponseDTO toResponseDTO(Usuario usuario) {

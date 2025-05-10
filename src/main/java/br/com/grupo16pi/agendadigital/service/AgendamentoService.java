@@ -5,6 +5,7 @@ import br.com.grupo16pi.agendadigital.repository.AgendamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,4 +30,11 @@ public class AgendamentoService {
     public void deleteById(Long id) { // Deleta um agendamento pelo ID.
         agendamentoRepository.deleteById(id);
     }
+    public List<Agendamento> findByData(LocalDate data) {
+    return agendamentoRepository.findByData(data);
+    }   
+    public List<Agendamento> findByUsuarioNome(String nome) {
+    return agendamentoRepository.findByUsuarioNome(nome);
+}
+
 }

@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import br.com.grupo16pi.agendadigital.DTOs.UsuarioUpdateDTO;
 import br.com.grupo16pi.agendadigital.model.Usuario;
-import br.com.grupo16pi.agendadigital.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
@@ -17,6 +17,19 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository; // Lida com o acesso aos dados de Usuario.
+
+    public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+    Optional<Usuario> findByCpf(String cpf);
+    Optional<Usuario> findByNumeroSus(String numeroSus);
+    }
+
+    public Optional<Usuario> findByCpf(String cpf) {
+        return usuarioRepository.findByCpf(cpf);
+    }
+
+    public Optional<Usuario> findByNumeroSus(String sus) {
+        return usuarioRepository.findByNumeroSus(sus);
+    }
 
     public List<Usuario> findAll() { // Busca todos os usuários.
         return usuarioRepository.findAll();
