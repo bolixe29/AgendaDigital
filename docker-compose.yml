@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: agenda_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: agenda_digital
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Kh@1Dr09o
+    volumes:
+      - /mnt/gaveta/postgres-data:/var/lib/postgresql/data
+    networks:
+      - rede-interna
+
+  app:
+    build: .
+    container_name: agenda_backend
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/agenda__digital
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=Kh@1Dr09o
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - "8080:8080"
+    networks:
+      - rede-interna
+
+networks:
+  rede-interna:
