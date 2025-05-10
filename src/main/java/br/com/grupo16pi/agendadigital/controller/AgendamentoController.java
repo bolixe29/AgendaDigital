@@ -1,5 +1,6 @@
 package br.com.grupo16pi.agendadigital.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.grupo16pi.agendadigital.DTOs.AgendamentoRequestDTO;
@@ -89,5 +91,13 @@ public class AgendamentoController {
         agendamento.setProcedimento(dto.getProcedimento());
     
         return agendamento;
-    }   
+    }
+    @GetMapping("/data")
+    public List<Agendamento> findByData(@RequestParam LocalDate data) {
+        return agendamentoService.findByData(data);
+    }
+    @GetMapping("/nome")
+    public List<Agendamento> findByUsuarioNome(@RequestParam String nome) {
+        return agendamentoService.findByUsuarioNome(nome);
+    }
 }
