@@ -18,13 +18,17 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository; // Lida com o acesso aos dados de Usuario.
 
-    public Optional<Usuario> findByCpf(String cpf) {
+    public Optional<Usuario> findByCpf(String cpf) { // Busca um usuário pelo CPF.
         return usuarioRepository.findByCpf(cpf);
     }
 
-    public Optional<Usuario> findByNumeroSus(String sus) {
+    public Optional<Usuario> findByNumeroSus(String sus) {  // Busca um usuário pelo número do SUS.
         return usuarioRepository.findByNumeroSus(sus);
     }
+
+    public List<Usuario> findByNome(String nome) {
+        return usuarioRepository.findByNomeContainingIgnoreCase(nome); // Busca usuários pelo nome, ignorando maiúsculas e minúsculas.
+    }    
 
     public List<Usuario> findAll() { // Busca todos os usuários.
         return usuarioRepository.findAll();

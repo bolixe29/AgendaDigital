@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.grupo16pi.agendadigital.DTOs.UsuarioRequestDTO;
@@ -83,6 +84,11 @@ public class UsuarioController {
         .map(this::toResponseDTO)
         .map(ResponseEntity::ok)
         .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/nome")
+    public List<UsuarioResponseDTO> findByNome(@RequestParam String nome) {
+        return usuarioService.findByNome(nome).stream().map(this::toResponseDTO).toList();
     }
 
     // Conversores
