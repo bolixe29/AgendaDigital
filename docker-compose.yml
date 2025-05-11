@@ -1,12 +1,12 @@
-version: '3.8'
+##version: '3.8'
 
 services:
   postgres:
-    image: postgres:16
-    container_name: agenda_postgres
+    image: postgres
+    container_name: agenda_DBpostgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: agenda_digital
+      POSTGRES_DB: agenda__digital
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Kh@1Dr09o
     volumes:
