@@ -27,17 +27,19 @@ public class UsuarioRequestDTO {
     private String email;
 
     private String telefone;
+    private String telCelular;
     private String logradouro;
     private String numero;
     private String cep;
     private String bairro;
     private String cidade;
-    private String telCelular;
 
     @NotBlank(message = "A UF é obrigatória")
     private String uf;
 
+
     // Getters e Setters
+    
     public String getNome() {
         return nome;
     }
@@ -70,12 +72,28 @@ public class UsuarioRequestDTO {
         this.numeroSus = numeroSus;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getTelefone() {
         return telefone;
     }
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public String getTelCelular() {
+        return telCelular;
+    }
+
+    public void setTelCelular(String telCelular) {
+        this.telCelular = telCelular;
     }
 
     public String getLogradouro() {
@@ -124,21 +142,5 @@ public class UsuarioRequestDTO {
 
     public void setUf(String uf) {
         this.uf = uf;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getTelCelular() {
-        return telCelular;
-    }
-
-    public void setTelCelular(String telCelular) {
-        this.telCelular = telCelular;
     }
 }
