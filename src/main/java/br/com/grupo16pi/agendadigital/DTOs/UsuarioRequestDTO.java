@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import org.hibernate.validator.constraints.br.CPF;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 
@@ -22,12 +23,16 @@ public class UsuarioRequestDTO {
     @NotBlank(message = "O número do SUS é obrigatório")
     private String numeroSus;
 
+    @Email(message = "O e-mail deve ter sintaxe válida")
+    private String email;
+
     private String telefone;
     private String logradouro;
     private String numero;
     private String cep;
     private String bairro;
     private String cidade;
+    private String telCelular;
 
     @NotBlank(message = "A UF é obrigatória")
     private String uf;
@@ -119,5 +124,21 @@ public class UsuarioRequestDTO {
 
     public void setUf(String uf) {
         this.uf = uf;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getTelCelular() {
+        return telCelular;
+    }
+
+    public void setTelCelular(String telCelular) {
+        this.telCelular = telCelular;
     }
 }

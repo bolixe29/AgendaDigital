@@ -101,6 +101,8 @@ public class UsuarioController {
         dto.setCpf(usuario.getCpf());
         dto.setNumeroSus(usuario.getNumeroSus());
         dto.setTelefone(usuario.getTelefone());
+        dto.setTelCelular(usuario.getTelCelular());
+        dto.setEmail(usuario.getEmail());
         dto.setLogradouro(usuario.getLogradouro());
         dto.setNumero(usuario.getNumero());
         dto.setCep(usuario.getCep());
@@ -117,6 +119,8 @@ public class UsuarioController {
         usuario.setCpf(dto.getCpf());
         usuario.setNumeroSus(dto.getNumeroSus());
         usuario.setTelefone(dto.getTelefone());
+        usuario.setTelCelular(dto.getTelCelular());
+        usuario.setEmail(dto.getEmail());
         usuario.setLogradouro(dto.getLogradouro());
         usuario.setNumero(dto.getNumero());
         usuario.setCep(dto.getCep());

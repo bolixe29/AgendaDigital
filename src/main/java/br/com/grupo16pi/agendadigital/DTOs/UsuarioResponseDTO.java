@@ -12,6 +12,8 @@ public class UsuarioResponseDTO {
     private String cpf;
     private String numeroSus;
     private String telefone;
+    private String telCelular; 
+    private String email;
     private String logradouro;
     private String numero;
     private String cep;
@@ -138,5 +140,24 @@ public class UsuarioResponseDTO {
 
     public void setUf(UfEnum uf) {
         this.uf = uf;
-    }       
+    }
+    
+    public String getTelCelular() {
+        return telCelular;
+    }
+
+
+    public void setTelCelular(String telCelular) {
+        this.telCelular = telCelular;
+    }
+
+
+    public String getEmail() {
+        return email;
+    }
+
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

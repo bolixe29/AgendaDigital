@@ -32,6 +32,12 @@ public class Usuario {
     @Column(nullable = false, unique = true)
     private String numeroSus;
 
+    @Column
+    private String telCelular;
+
+    @Column(unique = true)
+    private String email;
+
     private String telefone;
     private String logradouro;
     private String numero;
@@ -139,5 +145,21 @@ public class Usuario {
 
     public void setUf(UfEnum uf) {
         this.uf = uf;
+    }
+
+    public String getTelCelular() {
+        return telCelular;
+    }
+
+    public void setTelCelular(String telCelular) {
+        this.telCelular = telCelular;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
