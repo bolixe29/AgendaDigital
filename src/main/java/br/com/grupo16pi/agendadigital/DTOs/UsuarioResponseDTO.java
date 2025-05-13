@@ -16,6 +16,7 @@ public class UsuarioResponseDTO {
     private String email;
     private String logradouro;
     private String numero;
+    private String complemento;
     private String cep;
     private String bairro;
     private String cidade;
@@ -84,6 +85,14 @@ public class UsuarioResponseDTO {
     public void setNumero(String numero) {
         this.numero = numero;
     }
+        public String getComplemento() {
+        return complemento;
+    }
+    
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
+    }
+
     public String getCep() {
         return cep;
     }

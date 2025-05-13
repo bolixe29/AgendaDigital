@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import br.com.grupo16pi.agendadigital.DTOs.UsuarioUpdateDTO;
 import br.com.grupo16pi.agendadigital.model.Usuario;
 import br.com.grupo16pi.agendadigital.repository.UsuarioRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 @Service // Indica que esta classe é um serviço do Spring.
@@ -45,24 +44,22 @@ public class UsuarioService {
     public void deleteById(Long id) { // Deleta um usuário pelo ID.
         usuarioRepository.deleteById(id);
     }
-
     @Transactional
     public Usuario updatePartial(Long id, UsuarioUpdateDTO dto) {
     Usuario usuario = usuarioRepository.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+            .orElseThrow(() -> new RuntimeException("Usuário não encontrado com ID: " + id));
 
     if (dto.getNome() != null) usuario.setNome(dto.getNome());
-    if (dto.getDataNascimento() != null) usuario.setDataNascimento(dto.getDataNascimento());
-    if (dto.getCpf() != null) usuario.setCpf(dto.getCpf());
-    if (dto.getNumeroSus() != null) usuario.setNumeroSus(dto.getNumeroSus());
     if (dto.getTelefone() != null) usuario.setTelefone(dto.getTelefone());
     if (dto.getLogradouro() != null) usuario.setLogradouro(dto.getLogradouro());
     if (dto.getNumero() != null) usuario.setNumero(dto.getNumero());
+    if (dto.getComplemento() != null) usuario.setComplemento(dto.getComplemento());
     if (dto.getCep() != null) usuario.setCep(dto.getCep());
     if (dto.getBairro() != null) usuario.setBairro(dto.getBairro());
     if (dto.getCidade() != null) usuario.setCidade(dto.getCidade());
-    if (dto.getUf() != null) usuario.setUf(dto.getUf());
+    if (dto.getTelCelular() != null) usuario.setTelCelular(dto.getTelCelular());
+    if (dto.getEmail() != null) usuario.setEmail(dto.getEmail());
 
     return usuarioRepository.save(usuario);
-    } 
+    }
 }

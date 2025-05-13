@@ -41,6 +41,10 @@ public class Usuario {
     private String telefone;
     private String logradouro;
     private String numero;
+
+    @Column
+    private String complemento;
+
     private String cep;
     private String bairro;
     private String cidade;
@@ -113,6 +117,14 @@ public class Usuario {
 
     public void setNumero(String numero) {
         this.numero = numero;
+    }
+
+        public void setComplemento(String complemento) {
+        this.complemento = complemento;
+    }
+    
+    public String getComplemento() {
+        return complemento;
     }
 
     public String getCep() {
