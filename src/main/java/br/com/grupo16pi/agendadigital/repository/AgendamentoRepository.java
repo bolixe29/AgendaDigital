@@ -18,4 +18,8 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> 
     List<Agendamento> findByUsuarioNome(@Param("nome") String nome);
 
     List<Agendamento> findByData(LocalDate data);
+
+    @Query("SELECT a FROM Agendamento a WHERE a.especialidade.id = :especialidadeId AND a.data = :data")
+    List<Agendamento> findByEspecialidadeIdAndData(@Param("especialidadeId") Long especialidadeId, @Param("data") LocalDate data);
+    // Método para buscar agendamentos por ID de especialidade e data
 }
