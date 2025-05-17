@@ -2,6 +2,7 @@ package br.com.grupo16pi.agendadigital.model;
 
 import java.time.LocalDate;
 
+import br.com.grupo16pi.agendadigital.enums.SexoEnum;
 import br.com.grupo16pi.agendadigital.enums.UfEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,6 +39,10 @@ public class Usuario {
     @Column(unique = true)
     private String email;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private SexoEnum sexo;
+    
     private String telefone;
     private String logradouro;
     private String numero;
@@ -77,6 +82,13 @@ public class Usuario {
 
     public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
+    }
+    public SexoEnum getSexo() {
+        return sexo;
+    }
+    
+    public void setSexo(SexoEnum sexo) {
+        this.sexo = sexo;
     }
 
     public String getCpf() {

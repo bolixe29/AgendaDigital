@@ -1,5 +1,6 @@
 package br.com.grupo16pi.agendadigital.DTOs;
 
+import br.com.grupo16pi.agendadigital.enums.SexoEnum;
 import br.com.grupo16pi.agendadigital.enums.UfEnum;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -10,6 +11,7 @@ public class UsuarioUpdateDTO {
 
     private String nome;
     private LocalDate dataNascimento;
+    private SexoEnum sexo;
     private String cpf;
     private String numeroSus;
     private String telefone;
@@ -134,5 +136,13 @@ public class UsuarioUpdateDTO {
     
     public void setUf(UfEnum uf) {
         this.uf = uf;
+    }
+
+    public SexoEnum getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(SexoEnum sexo) {
+        this.sexo = sexo;
     }
 }   

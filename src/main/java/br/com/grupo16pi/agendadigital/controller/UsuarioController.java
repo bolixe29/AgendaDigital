@@ -98,6 +98,7 @@ public class UsuarioController {
         dto.setId(usuario.getId());
         dto.setNome(usuario.getNome());
         dto.setDataNascimento(usuario.getDataNascimento());
+        dto.setSexo(usuario.getSexo());
         dto.setCpf(usuario.getCpf());
         dto.setNumeroSus(usuario.getNumeroSus());
         dto.setTelefone(usuario.getTelefone());
@@ -116,6 +117,7 @@ public class UsuarioController {
         Usuario usuario = new Usuario();
         usuario.setNome(dto.getNome());
         usuario.setDataNascimento(dto.getDataNascimento());
+        usuario.setSexo(dto.getSexo());
         usuario.setCpf(dto.getCpf());
         usuario.setNumeroSus(dto.getNumeroSus());
         usuario.setTelefone(dto.getTelefone());

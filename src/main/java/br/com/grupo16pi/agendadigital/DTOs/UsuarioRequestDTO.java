@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import org.hibernate.validator.constraints.br.CPF;
 
+import br.com.grupo16pi.agendadigital.enums.SexoEnum;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
@@ -26,6 +27,7 @@ public class UsuarioRequestDTO {
     @Email(message = "O e-mail deve ter sintaxe válida")
     private String email;
 
+    private SexoEnum sexo;
     private String telefone;
     private String telCelular;
     private String logradouro;
@@ -47,6 +49,14 @@ public class UsuarioRequestDTO {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public SexoEnum getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(SexoEnum sexo) {
+        this.sexo = sexo;
     }
 
     public LocalDate getDataNascimento() {

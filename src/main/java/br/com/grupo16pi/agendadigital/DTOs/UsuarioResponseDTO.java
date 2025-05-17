@@ -1,6 +1,7 @@
 package br.com.grupo16pi.agendadigital.DTOs;
 import java.time.LocalDate;
 
+import br.com.grupo16pi.agendadigital.enums.SexoEnum;
 import br.com.grupo16pi.agendadigital.enums.UfEnum;
 
 
@@ -9,6 +10,7 @@ public class UsuarioResponseDTO {
     private Long id;
     private String nome;
     private LocalDate dataNascimento;
+    private SexoEnum sexo;
     private String cpf;
     private String numeroSus;
     private String telefone;
@@ -116,5 +118,11 @@ public class UsuarioResponseDTO {
     }
     public void setUf(UfEnum uf) {
         this.uf = uf;
+    }
+    public SexoEnum getSexo() {
+        return sexo;
+    }
+    public void setSexo(SexoEnum sexo) {
+        this.sexo = sexo;
     }
 }
