@@ -9,10 +9,10 @@ services:
       POSTGRES_DB: agenda__digital
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Kh@1Dr09o
-      ports:
-      - "5432:5432"
     volumes:
       - /mnt/gaveta/postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     networks:
       - rede-interna
 

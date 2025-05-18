@@ -106,6 +106,7 @@ public class UsuarioController {
         dto.setEmail(usuario.getEmail());
         dto.setLogradouro(usuario.getLogradouro());
         dto.setNumero(usuario.getNumero());
+        dto.setComplemento(usuario.getComplemento());
         dto.setCep(usuario.getCep());
         dto.setBairro(usuario.getBairro());
         dto.setCidade(usuario.getCidade());
@@ -126,6 +127,7 @@ public class UsuarioController {
         usuario.setLogradouro(dto.getLogradouro());
         usuario.setNumero(dto.getNumero());
         usuario.setCep(dto.getCep());
+        usuario.setComplemento(dto.getComplemento());
         usuario.setBairro(dto.getBairro());
         usuario.setCidade(dto.getCidade());
         usuario.setUf(br.com.grupo16pi.agendadigital.enums.UfEnum.valueOf(dto.getUf()));

@@ -131,14 +131,13 @@ public class Usuario {
         this.numero = numero;
     }
 
+        public String getComplemento() {
+        return complemento;
+    }
         public void setComplemento(String complemento) {
         this.complemento = complemento;
     }
-    
-    public String getComplemento() {
-        return complemento;
-    }
-
+  
     public String getCep() {
         return cep;
     }
