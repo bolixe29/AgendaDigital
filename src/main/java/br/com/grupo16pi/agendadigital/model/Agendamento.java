@@ -13,35 +13,35 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "agendamentos") // Define a tabela no banco de dados com o nome "agendamentos"
+@Table(name = "agendamentos")
 public class Agendamento {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Gera o ID automaticamente (auto incremento)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false) // Chave estrangeira para o usuário
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
     @ManyToOne
-    @JoinColumn(name = "especialidade_id", nullable = false) // Adicionada a especialidade como chave estrangeira   
+    @JoinColumn(name = "especialidade_id", nullable = false)
     private Especialidade especialidade;    
 
     @ManyToOne
     @JoinColumn(name = "profissional_id")
-    private Profissional profissional; // Removido o `nullable = false` que não fazia sentido na marcação da consulta
+    private Profissional profissional;
 
-    @Column(nullable = false) // Campo obrigatório para o nome do procedimento
+    @Column // Removido nullable = false pra permitir valores null
     private String procedimento;
 
-    @Column(nullable = false) // Campo obrigatório para a data do agendamento
+    @Column(nullable = false)
     private LocalDate data;
 
-    @Column(nullable = false) // Campo obrigatório para o horário do agendamento
+    @Column(nullable = false)
     private LocalTime horario;
 
-    // Getters e setters (acessores e modificadores)
+    // Getters e setters
 
     public Long getId() {
         return id;
