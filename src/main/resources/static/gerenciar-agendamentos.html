@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciar Agendamentos</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+  <script type="module" src="script.js"></script> <!-- Adicionado type="module" -->
+</head>
+
+<body>
+  <header>
+    <a href="index.html">🏠 Home</a>
+    <a href="#">👨‍⚕️ Profissionais</a>
+    <a href="#">📋 Especialidades</a>
+  </header>
+
+  <div id="form-area-ga">
+    <form class="user-form">
+      <h2>Busca de Usuário</h2>
+
+      <div class="form-row">
+        <input id="nome" type="text" placeholder="Nome do Usuário">
+        <button id="btn-busca-nome" type="button" class="search-btn">🔍</button>
+      </div>
+
+      <div class="form-row">
+        <input id="cpf" type="text" placeholder="CPF" maxlength="14">
+        <button id="btn-busca-cpf" type="button" class="search-btn">🔍</button>
+        <input id="sus" type="text" placeholder="Nº SUS">
+        <button id="btn-busca-sus" type="button" class="search-btn">🔍</button>
+      </div>
+
+      <!-- Área para exibir múltiplos resultados da busca por nome -->
+      <div id="resultados-nome" class="hidden"></div>
+    </form>
+
+    <h2>🗓️ Agendamentos do Usuário</h2>
+    <table id="tabela-agendamentos-usuario">
+      <thead>
+        <tr>
+          <th>Usuário</th>
+          <th>Data / Horário</th>
+          <th>Especialidade</th>
+          <th></th> <!-- Nova coluna -->
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- Modal para edição de agendamento -->
+  <div id="modal-editar-agendamento" class="modal hidden">
+    <div class="modal-content">
+        <span class="close">×</span>
+        <h2>Editar Agendamento</h2>
+        <p>Para alterar este agendamento de <span id="modal-especialidade"></span>, selecione uma nova data e horário nos campos abaixo e clique em REAGENDAR. Para desmarcar a consulta/procedimento, clique no botão DESMARCAR.</p>
+        <label for="modal-data">Data:</label>
+        <input type="text" id="modal-data" readonly>
+        <label for="modal-horario">Horário:</label>
+        <select id="modal-horario"></select>
+        <button id="btn-reagendar">Reagendar</button>
+        <button id="btn-desmarcar">Desmarcar</button>
+    </div>
+</div>
+
+</body>
+
+</html>

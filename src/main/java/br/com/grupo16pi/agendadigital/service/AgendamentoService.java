@@ -9,32 +9,37 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-@Service // Indica que esta classe é um serviço do Spring.
+@Service
 public class AgendamentoService {
 
     @Autowired
-    private AgendamentoRepository agendamentoRepository; // Lida com o acesso aos dados de Agendamento.
+    private AgendamentoRepository agendamentoRepository;
 
-    public List<Agendamento> findAll() { // Busca todos os agendamentos.
+    public List<Agendamento> findAll() {
         return agendamentoRepository.findAll();
     }
 
-    public Optional<Agendamento> findById(Long id) { // Busca um agendamento pelo ID.
+    public Optional<Agendamento> findById(Long id) {
         return agendamentoRepository.findById(id);
     }
 
-    public Agendamento save(Agendamento agendamento) { // Salva ou atualiza um agendamento.
+    public Agendamento save(Agendamento agendamento) {
         return agendamentoRepository.save(agendamento);
     }
 
-    public void deleteById(Long id) { // Deleta um agendamento pelo ID.
+    public void deleteById(Long id) {
         agendamentoRepository.deleteById(id);
     }
-    public List<Agendamento> findByData(LocalDate data) {
-    return agendamentoRepository.findByData(data);
-    }   
-    public List<Agendamento> findByUsuarioNome(String nome) {
-    return agendamentoRepository.findByUsuarioNome(nome);
-}
 
+    public List<Agendamento> findByData(LocalDate data) {
+        return agendamentoRepository.findByData(data);
+    }
+
+    public List<Agendamento> findByUsuarioNome(String nome) {
+        return agendamentoRepository.findByUsuarioNome(nome);
+    }
+
+    public Optional<Agendamento> findByIdWithRelations(Long id) {
+        return agendamentoRepository.findByIdWithRelations(id);
+    }
 }

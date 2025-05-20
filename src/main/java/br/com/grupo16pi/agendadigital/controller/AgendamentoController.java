@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import br.com.grupo16pi.agendadigital.DTOs.AgendamentoRequestDTO;
 import br.com.grupo16pi.agendadigital.model.Agendamento;
@@ -26,10 +29,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/agendamentos")
 public class AgendamentoController {
+
+    private static final Logger logger = LoggerFactory.getLogger(AgendamentoController.class);
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -53,10 +60,18 @@ public class AgendamentoController {
     @Operation(summary = "Busca agendamento por ID", description = "Retorna um agendamento específico pelo seu ID")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Agendamento encontrado"),
-        @ApiResponse(responseCode = "404", description = "Agendamento não encontrado")
+        @ApiResponse(responseCode = "404", description = "Agendamento não encontrado"),
+        @ApiResponse(responseCode = "500", description = "Erro no servidor")
     })
-    public Optional<Agendamento> findById(@PathVariable Long id) {
-        return agendamentoService.findById(id);
+    public ResponseEntity<Agendamento> findById(@PathVariable Long id) {
+        try {
+            Optional<Agendamento> agendamento = agendamentoService.findByIdWithRelations(id);
+            return agendamento.map(ResponseEntity::ok)
+                             .orElseGet(() -> ResponseEntity.notFound().build());
+        } catch (Exception e) {
+            logger.error("Erro ao buscar agendamento com ID {}: {}", id, e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PostMapping
@@ -68,9 +83,14 @@ public class AgendamentoController {
         @ApiResponse(responseCode = "500", description = "Erro no servidor")
     })
     public ResponseEntity<Agendamento> save(@RequestBody @Valid AgendamentoRequestDTO dto) {
-        Agendamento agendamento = toEntity(dto);
-        Agendamento salvo = agendamentoService.save(agendamento);
-        return ResponseEntity.ok(salvo);
+        try {
+            Agendamento agendamento = toEntity(dto);
+            Agendamento salvo = agendamentoService.save(agendamento);
+            return ResponseEntity.ok(salvo);
+        } catch (Exception e) {
+            logger.error("Erro ao criar agendamento: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
     
     @PutMapping("/{id}")
@@ -79,9 +99,15 @@ public class AgendamentoController {
         @ApiResponse(responseCode = "200", description = "Agendamento atualizado com sucesso"),
         @ApiResponse(responseCode = "404", description = "Agendamento não encontrado")
     })
-    public Agendamento update(@PathVariable Long id, @RequestBody Agendamento agendamento) {
-        agendamento.setId(id);
-        return agendamentoService.save(agendamento);
+    public ResponseEntity<Agendamento> update(@PathVariable Long id, @RequestBody Agendamento agendamento) {
+        try {
+            agendamento.setId(id);
+            Agendamento atualizado = agendamentoService.save(agendamento);
+            return ResponseEntity.ok(atualizado);
+        } catch (Exception e) {
+            logger.error("Erro ao atualizar agendamento com ID {}: {}", id, e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -90,8 +116,14 @@ public class AgendamentoController {
         @ApiResponse(responseCode = "204", description = "Agendamento deletado com sucesso"),
         @ApiResponse(responseCode = "404", description = "Agendamento não encontrado")
     })
-    public void deleteById(@PathVariable Long id) {
-        agendamentoService.deleteById(id);
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        try {
+            agendamentoService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            logger.error("Erro ao deletar agendamento com ID {}: {}", id, e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
     
     private Agendamento toEntity(AgendamentoRequestDTO dto) {
@@ -125,5 +157,13 @@ public class AgendamentoController {
     @Operation(summary = "Busca agendamentos por nome do usuário", description = "Retorna uma lista de agendamentos pelo nome do usuário")
     public List<Agendamento> findByUsuarioNome(@RequestParam String nome) {
         return agendamentoService.findByUsuarioNome(nome);
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<String> handleException(Exception e) {
+        logger.error("Erro interno no controlador: {}", e.getMessage(), e);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body("Erro interno no servidor: " + e.getMessage());
     }
 }
